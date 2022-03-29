@@ -8,8 +8,8 @@
   <xacro:property name="M_PI" value="3.14159"/>
 
   <!-- Right/Left Hubcap + Wheel -->
-  <xacro:macro name="p3dx_wheel" params="suffix parent reflect">
-    <link name="p3dx_${suffix}_wheel">
+  <xacro:macro name="p3dx_wheel" params="suffix parent reflect namespace">
+    <link name="${namespace}/p3dx_${suffix}_wheel">
       <inertial>
         <mass value="0.5"/> 
         <origin xyz="0 0 0"/>
@@ -33,14 +33,14 @@
       </collision>
     </link>
 
-    <joint name="base_${suffix}_hubcap_joint" type="fixed">
+    <joint name="${namespace}/base_${suffix}_hubcap_joint" type="fixed">
       <origin xyz="0 0 0" rpy="0 0 0"/>
 
-      <parent link="p3dx_${suffix}_wheel"/>
-      <child link="p3dx_${suffix}_hubcap"/>
+      <parent link="${namespace}/p3dx_${suffix}_wheel"/>
+      <child link="${namespace}/p3dx_${suffix}_hubcap"/>
     </joint>
 
-    <link name="p3dx_${suffix}_hubcap">
+    <link name="${namespace}/p3dx_${suffix}_hubcap">
       <inertial>
         <mass value="0.01"/>  
         <origin xyz="0 0 0"/>
@@ -65,21 +65,21 @@
         <mechanicalReduction>${reflect * 624/35 * 80/19}</mechanicalReduction>
         </transmission>-->
 
-    <joint name="base_${suffix}_wheel_joint" type="continuous">
+    <joint name="${namespace}/base_${suffix}_wheel_joint" type="continuous">
       <axis xyz="0 1 0"/>
       <anchor xyz="0 0 0"/>
       <limit effort="100" velocity="100" />
       <joint_properties damping="0.0" friction="0.0" />
       <origin xyz="0 ${reflect*0.158} 0.091" rpy="0 0 0"/>
-      <parent link="base_link"/>
-      <child link="p3dx_${suffix}_wheel"/>
+      <parent link="${parent}"/>
+      <child link="${namespace}/p3dx_${suffix}_wheel"/>
     </joint>
 
-    <gazebo reference="p3dx_${suffix}_hubcap">
+    <gazebo reference="${namespace}/p3dx_${suffix}_hubcap">
       <material value="Gazebo/Yellow"/>
     </gazebo>
 
-    <gazebo reference="p3dx_${suffix}_wheel">
+    <gazebo reference="${namespace}/p3dx_${suffix}_wheel">
       <material value="Gazebo/Black"/>
       <mu1>0.5</mu1>
       <mu2>50.0</mu2>

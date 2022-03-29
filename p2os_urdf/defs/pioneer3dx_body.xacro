@@ -5,10 +5,10 @@
   <xacro:include filename="$(find p2os_urdf)/defs/pioneer3dx_wheel.xacro"/>
 
   <!-- Chassis description -->
-  <link name="base_link">
+  <link name="$(arg ns)/base_link">
 	<!-- CHECK THESE VALUES. THEY MAY BE COMPLETELY WRONG. -->
 	<inertial>
-	  <mass value="20.0"/>
+	  <mass value="13.0"/>
 	  <origin xyz="-0.045 0 0.148"/>
 	  <inertia ixx="0.3338" ixy="0.0" ixz="0.0"
 			   iyy="0.4783" iyz="0.0"
@@ -33,11 +33,11 @@
 	  </geometry>
 	</collision>
   </link>
-  <gazebo reference="base_link">
+  <gazebo reference="$(arg ns)/base_link">
 	<material value="Gazebo/Red"/>
   </gazebo>
 
-  <link name="top_plate">
+  <link name="$(arg ns)/top_plate">
 	<inertial>
 	  <mass value="0.01"/>	
 	  <origin xyz="0 0 0"/>
@@ -55,18 +55,18 @@
 	  </material>
 	</visual>
   </link>
-  <gazebo reference="top_plate">
+  <gazebo reference="$(arg ns)/top_plate">
 	<material value="Gazebo/Black"/>
   </gazebo>
 
-  <joint name="base_top_joint" type="fixed">
+  <joint name="$(arg ns)/base_top_joint" type="fixed">
 	<origin xyz="-0.045 0 0.24" rpy="0 0 0"/>
-	<parent link="base_link"/>
-	<child link="top_plate"/>
+	<parent link="$(arg ns)/base_link"/>
+	<child link="$(arg ns)/top_plate"/>
   </joint>
 
   <!-- Swivel -->
-  <link name="swivel">
+  <link name="$(arg ns)/swivel">
 	<inertial>
 	  <mass value="0.1"/>	
 	  <origin xyz="0 0 0"/>
@@ -83,21 +83,21 @@
 	  </material>
 	</visual>
   </link>
-  <gazebo reference="swivel">
+  <gazebo reference="$(arg ns)/swivel">
 	<material value="Gazebo/Black"/>
   </gazebo>
 
-  <joint name="base_swivel_joint" type="continuous">
+  <joint name="$(arg ns)/base_swivel_joint" type="continuous">
 	<origin xyz="-0.185 0 0.055" rpy="0 0 0"/>
 	<axis xyz="0 0 1"/>
     <limit effort="100" velocity="100" k_velocity="0" />
     <joint_properties damping="0.0" friction="0.0" />
-	<parent link="base_link"/>
-	<child link="swivel"/>
+	<parent link="$(arg ns)/base_link"/>
+	<child link="$(arg ns)/swivel"/>
   </joint>
 
   <!-- Center Wheel + Hubcap -->
-  <link name="center_hubcap">
+  <link name="$(arg ns)/center_hubcap">
     <inertial>
 	  <mass value="0.01"/>	
 	  <origin xyz="0 0 0"/>
@@ -114,21 +114,21 @@
 	  </material>
 	</visual>
   </link>
-  <gazebo reference="center_hubcap">
+  <gazebo reference="$(arg ns)/center_hubcap">
 	<material value="Gazebo/Black"/>
   </gazebo>
 
-  <joint name="swivel_hubcap_joint" type="continuous">
+  <joint name="$(arg ns)/swivel_hubcap_joint" type="continuous">
 	<origin xyz="-0.026 0 -0.016" rpy="0 0 0"/>
 	<axis xyz="0 1 0"/>
 	<anchor xyz="0 0 0"/>
     <limit effort="100" velocity="100" k_velocity="0" />
     <joint_properties damping="0.0" friction="0.0" />
-	<parent link="swivel"/>
-	<child link="center_wheel"/>
+	<parent link="$(arg ns)/swivel"/>
+	<child link="$(arg ns)/center_wheel"/>
   </joint>
 
-  <link name="center_wheel">
+  <link name="$(arg ns)/center_wheel">
 	<inertial>
 	  <mass value="0.1"/>	
 	  <origin xyz="0 0 0"/>
@@ -152,21 +152,21 @@
 	  </geometry>
 	</collision>
   </link>
-  <gazebo reference="center_wheel">
+  <gazebo reference="$(arg ns)/center_wheel">
 	<material value="Gazebo/Black"/>
   </gazebo>
 
-  <joint name="center_wheel_joint" type="fixed">
+  <joint name="$(arg ns)/center_wheel_joint" type="fixed">
 	<origin xyz="-0.0035 0 -0.001" rpy="0 0 0"/>
-	<parent link="center_wheel"/>
-	<child link="center_hubcap"/>
+	<parent link="$(arg ns)/center_wheel"/>
+	<child link="$(arg ns)/center_hubcap"/>
   </joint>
 
-  <xacro:p3dx_wheel suffix="left" parent="base_link" reflect="1"/>
-  <xacro:p3dx_wheel suffix="right" parent="base_link" reflect="-1"/>
+  <xacro:p3dx_wheel suffix="left" parent="$(arg ns)/base_link" reflect="1" namespace="$(arg ns)"/>
+  <xacro:p3dx_wheel suffix="right" parent="$(arg ns)/base_link" reflect="-1" namespace="$(arg ns)"/>
 
   <!-- Front + Back Sonar -->
-  <link name="front_sonar">
+  <link name="$(arg ns)/front_sonar">
 	<inertial>
 	  <mass value="0.0001"/>	
 	  <origin xyz="0 0 0"/>
@@ -183,17 +183,17 @@
 	  </material>
 	</visual>
   </link>
-  <gazebo reference="front_sonar">
+  <gazebo reference="$(arg ns)/front_sonar">
 	<material value="Gazebo/Yellow"/>
   </gazebo>
 
-  <joint name="base_front_joint" type="fixed">
+  <joint name="$(arg ns)/base_front_joint" type="fixed">
 	<origin xyz="-0.198 0 0.208" rpy="0 0 0"/>
-	<parent link="base_link"/>
-	<child link="front_sonar"/>
+	<parent link="$(arg ns)/base_link"/>
+	<child link="$(arg ns)/front_sonar"/>
   </joint>
 
-  <link name="back_sonar">
+  <link name="$(arg ns)/back_sonar">
 	<inertial>
 	  <mass value="0.0001"/>	
 	  <origin xyz="0 0 0"/>
@@ -211,36 +211,36 @@
 	</visual>
   </link>
 
-  <gazebo reference="back_sonar">
+  <gazebo reference="$(arg ns)/back_sonar">
 	<material value="Gazebo/Yellow"/>
   </gazebo>
 
-  <joint name="base_back_joint" type="fixed">
+  <joint name="$(arg ns)/base_back_joint" type="fixed">
 	<origin xyz="0.109 0 0.209" rpy="0 0 0"/>
 	<!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
-	<parent link="base_link"/>
-	<child link="back_sonar"/>
+	<parent link="$(arg ns)/base_link"/>
+	<child link="$(arg ns)/back_sonar"/>
   </joint>
 
 
   <gazebo>
     <!-- Robot locomotion plugin -->
-	<plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+	<plugin name="$(arg ns)/differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
       <legacyMode>false</legacyMode>
       <alwaysOn>true</alwaysOn>
 	  <updateRate>100.0</updateRate>
-	  <leftJoint>base_left_wheel_joint</leftJoint>
-      <rightJoint>base_right_wheel_joint</rightJoint>
+	  <leftJoint>$(arg ns)/base_left_wheel_joint</leftJoint>
+      <rightJoint>$(arg ns)/base_right_wheel_joint</rightJoint>
 	  <wheelSeparation>0.32</wheelSeparation>
 	  <wheelDiameter>0.18</wheelDiameter>
 	  <wheelTorque>5</wheelTorque>
       <wheelAcceleration>0</wheelAcceleration>
-      <robotNamespace>pioneer</robotNamespace>
-	  <commandTopic>cmd_vel</commandTopic>
-	  <odometryTopic>odom</odometryTopic>
+      <!--<robotNamespace>$(arg ns)</robotNamespace>-->
+	  <commandTopic>$(arg ns)/cmd_vel</commandTopic>
+	  <odometryTopic>$(arg ns)/odom</odometryTopic>
       <odometrySource>ENCODER</odometrySource><!--Other option is World-->
-	  <odometryFrame>odom</odometryFrame>
-      <robotBaseFrame>base_link</robotBaseFrame>
+	  <odometryFrame>$(arg ns)/odom</odometryFrame>
+      <robotBaseFrame>$(arg ns)/base_link</robotBaseFrame>
       <publishTf>1</publishTf>
       <publishWheelTF>false</publishWheelTF>
       <publishWheelJointState>false</publishWheelJointState>
@@ -248,16 +248,17 @@
 	</plugin>
 
     <!-- Fake localization plugin -->
-    <plugin name="ground_truth_odometry" filename="libgazebo_ros_p3d.so">
+    <plugin name="$(arg ns)/ground_truth_odometry" filename="libgazebo_ros_p3d.so">
 	  <alwaysOn>true</alwaysOn>
 	  <updateRate>100.0</updateRate>
-	  <bodyName>base_link</bodyName>
-	  <topicName>base_pose_ground_truth</topicName>
+	  <bodyName>$(arg ns)/base_link</bodyName>
+	  <topicName>$base_pose_ground_truth</topicName>
 	  <gaussianNoise>0.01</gaussianNoise>
 	  <frameName>map</frameName>-->
       <!-- initialize odometry for fake localization-->
 	  <xyzOffsets>0 0 0</xyzOffsets>
 	  <rpyOffsets>0 0 0</rpyOffsets>
+	  <robotNamespace>$(arg ns)</robotNamespace>
 	</plugin>
 
   </gazebo>
